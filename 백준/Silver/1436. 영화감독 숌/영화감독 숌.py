@@ -1,10 +1,9 @@
 N = int(input())
 
-S = set([str(i) for i in range(666,3000000)])
-lst = []
-for x in S:
-    if '666' in x:
-        lst.append(int(x))
-
-lst.sort()
-print(lst[N-1])
+cnt=0
+num = 665
+while cnt<N:
+    num+=1
+    if '666' in str(num):
+        cnt +=1
+print(num)
