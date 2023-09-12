@@ -5,9 +5,11 @@ for _ in range(N):
     eggs.append([s,w])
 
 ans = 0
-v = [0]*N
 def dfs(n, cnt):
     global ans
+    if ans>=cnt+ min(2*(N-n),N-cnt):
+        return
+
     if n==N:
         ans = max(ans, cnt)
         return
