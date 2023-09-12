@@ -1,5 +1,5 @@
 import sys
-input = sys.stdin.readline
+input= sys.stdin.readline
 
 R,C,M = map(int, input().split())
 
@@ -29,21 +29,26 @@ for idx in range(C): # 낙시꾼 위치
         else:
             cs%=(2*(C-1))
 
-        ni = ci+cs*dir[cd][0]
-        nj = cj+cs*dir[cd][1]
+        ni = ci + cs * dir[cd][0]
+        nj = cj + cs * dir[cd][1]
+        ns = cs
+        while not (0 <= ni < R and 0 <= nj < C):
+            if ni < 0:
+                ns -= ci
+                ci = 0
+            elif ni >= R:
+                ns -= (R - 1) - ci
+                ci = R - 1
+            elif nj < 0:
+                ns -= cj
+                cj = 0
+            elif nj >= C:
+                ns -= (C - 1) - cj
+                cj = C - 1
+            cd = change[cd]
+            ni, nj = ci + ns * dir[cd][0], cj + ns * dir[cd][1]
 
-        for _ in range(cs):
-            ci+=dir[cd][0]
-            cj+=dir[cd][1]
-            if 0<=ci<R and 0<=cj<C:
-                continue
-            else:
-                ci-=dir[cd][0]
-                cj-=dir[cd][1]
-                cd = change[cd]
-                ci+=dir[cd][0]
-                cj+=dir[cd][1]
-
+        ci,cj = ni,nj
         if  not new_shark.get((ci,cj)):
             new_shark[(ci,cj)] = (cs,cd,cz)
         else:
