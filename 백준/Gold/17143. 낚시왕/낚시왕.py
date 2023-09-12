@@ -1,25 +1,25 @@
+import sys
+input = sys.stdin.readline
+
 R,C,M = map(int, input().split())
 
-arr = [[0]*C for _ in range(R)]
 shark =dict()
 dir = {0:(-1,0), 1:(1,0), 2:(0,1), 3:(0,-1)}
 change = {0:1,1:0, 2:3,3:2}
 for _ in range(M):
     r,c,s,d,z = map(int, input().split())
     shark[(r-1,c-1)] = (s,d-1,z)
-    arr[r-1][c-1]=1
 
 sm = 0 # 잡은 상어 크기 누적.
 for idx in range(C): # 낙시꾼 위치
     for j in range(R): #해당 낙시꾼 위치에서 상어 찾기
-        if arr[j][idx]==1:
+        if shark.get((j,idx)):
             sm+=shark[(j,idx)][2]
             del shark[(j,idx)]
             break
 
     # 상어 이동 구현
     new_shark = dict()
-    arr = [[0] * C for _ in range(R)]
     for key, value in shark.items():
         ci,cj = key
         cs,cd,cz = value
@@ -28,6 +28,9 @@ for idx in range(C): # 낙시꾼 위치
              cs%=(2*(R-1))
         else:
             cs%=(2*(C-1))
+
+        ni = ci+cs*dir[cd][0]
+        nj = cj+cs*dir[cd][1]
 
         for _ in range(cs):
             ci+=dir[cd][0]
@@ -41,9 +44,7 @@ for idx in range(C): # 낙시꾼 위치
                 ci+=dir[cd][0]
                 cj+=dir[cd][1]
 
-        arr[ci][cj]=1
-
-        if (ci,cj) not in new_shark:
+        if  not new_shark.get((ci,cj)):
             new_shark[(ci,cj)] = (cs,cd,cz)
         else:
             if new_shark[(ci,cj)][2]<cz:
