@@ -39,22 +39,20 @@ def gcd(a,b):
 lst = []
 a,b = M,N
 while min(a,b)>0:
-    lst.append(a+b-2)
+    lst.append(2*(a+b-2))
     a -=2
     b -=2
 
-val = lst[0]
-
+lcd =1
 if len(lst)>=2:
     for i in range(1,len(lst)):
-        val = gcd(val, lst[i])
-
-    lcd = val
-    for i in range(len(lst)):
-        lcd*=(lst[i]//val)
+        val = gcd(lst[i-1], lst[i])
+        lcd *= lst[i-1]*lst[i]//val
 
     R = R%lcd
-    
+else:
+    R = R%lst[0]
+
 for _ in range(R):
     arr = rotate(arr)
 for x in arr:
