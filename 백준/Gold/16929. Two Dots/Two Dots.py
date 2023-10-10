@@ -7,14 +7,13 @@ def dfs(si,sj,cnt,v):
     if ans==True:
         return
 
-    if si==i and sj==j:
-        if cnt>=4:
+    for di,dj in ((-1,0),(1,0),(0,1),(0,-1)):
+        ni,nj = si+di, sj+dj
+        if ni==i and nj==j and cnt>=4:
             ans = True
             return
 
-    for di,dj in ((-1,0),(1,0),(0,1),(0,-1)):
-        ni,nj = si+di, sj+dj
-        if 0<=ni<N and 0<=nj<M and arr[ni][nj]==arr[si][sj] and v[ni][nj]==0:
+        elif 0<=ni<N and 0<=nj<M and arr[ni][nj]==arr[si][sj] and v[ni][nj]==0:
             v[ni][nj]=1
             dfs(ni,nj,cnt+1,v)
             v[ni][nj]=0
@@ -25,7 +24,9 @@ v=[[0]*M for _ in range(N)]
 ans=False
 for i in range(N):
     for j in range(M):
-        dfs(i,j,0,v)
+        v[i][j]=True
+        dfs(i,j,1,v)
+        v[i][j]=False
         if ans:
             break
 
