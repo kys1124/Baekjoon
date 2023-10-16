@@ -1,24 +1,31 @@
-import sys
-input= sys.stdin.readline
-
-N,M,K = map(int, input().split())
-arr = [[0]*(M+2)]+[[0]+list(map(int, input().split()))+[0] for _ in range(N)]+[[0]*(M+2)]
+N,M,K= map(int, input().split())
+arr = [list(map(int, input().split())) for _ in range(N)]
+mx = max(map(max, arr))
+v= [[0]*M for _ in range(N)]
 ans = -10000*K
-v = [[0]*(M+2) for _ in range(N+2)]
-def dfs(n, sm):
+def dfs(n,sm,v):
     global ans
-    if n==K:
-        ans = max(ans, sm)
+    if ans>=sm+(K-n)*mx:
         return
 
-    for i in range(1,N+1):
-        for j in range(1,M+1):
-            if v[i][j]==0 and v[i-1][j]!=1 and v[i+1][j]!=1 and v[i][j-1]!=1 and v[i][j+1]!=1:
-                v[i][j]=1
-                v[i-1][j]=v[i+1][j]=v[i][j-1]=v[i][j+1]=-1
-                dfs(n+1, sm+arr[i][j])
-                v[i][j] = 0
-                v[i - 1][j] = v[i + 1][j] = v[i][j - 1] = v[i][j + 1] = 0
+    if n==K:
+        ans = max(ans, sm)
 
-dfs(0,0)
+        return
+
+    for i in range(N*M):
+        r,c = i//M,i%M
+        for di,dj in ((1,0),(-1,0),(0,1),(0,-1)):
+            ni,nj = r+di, c+dj
+            if not (0<=ni<N and 0<=nj<M) or v[ni][nj]==0:
+                continue
+            else:
+                break
+        else:
+            if v[r][c]==0:
+                v[r][c] = 1
+                dfs(n + 1, sm + arr[r][c], v)
+                v[r][c] = 0
+
+dfs(0,0,v)
 print(ans)
