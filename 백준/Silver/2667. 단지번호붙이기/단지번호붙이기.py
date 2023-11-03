@@ -1,30 +1,25 @@
 N = int(input())
-
-board = [[0]*(N+2)]+[[0]+ list(map(int, input()))+[0] for _ in range(N)]+[[0]*(N+2)]
-
-from collections import deque
-check = set()
-def bfs(start):
-    queue =deque([start])
-    visit = set((start))
-    check.add((start))
-    ans = 0
-    while queue:
-        sx,sy = queue.popleft()
-        ans +=1
-        for dx,dy in ((1,0),(-1,0),(0,1),(0,-1)):
-            nx,ny= sx+dx, sy+dy
-            if board[nx][ny]==1 and (nx,ny) not in visit and (nx,ny) not in check:
-                visit.add((nx,ny))
-                check.add((nx,ny))
-                queue.append((nx,ny))
-    return ans
+arr = [list(map(int, input())) for _ in range(N)]
+v = [[0]*N for _ in range(N)]
+def dfs(si,sj):
+    stk = [(si,sj)]
+    v[si][sj]=1
+    cnt = 1
+    while stk:
+        ci,cj = stk.pop()
+        for di,dj in ((1,0),(-1,0),(0,1),(0,-1)):
+            ni,nj = ci+di, cj+dj
+            if 0<=ni<N and 0<=nj<N and v[ni][nj]==0 and arr[ni][nj]==1:
+                v[ni][nj]=1
+                stk.append((ni,nj))
+                cnt+=1
+    return cnt
 
 ans = []
-for i in range(1,N+1):
-    for j in range(1, N+1):
-        if board[i][j]==1 and (i,j) not in check:
-            ans.append(bfs((i,j)))
+for i in range(N):
+    for j in range(N):
+        if arr[i][j]==1 and v[i][j]==0:
+            ans.append(dfs(i,j))
 ans.sort()
 print(len(ans))
 for x in ans:
