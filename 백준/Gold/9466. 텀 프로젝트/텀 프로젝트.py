@@ -1,44 +1,33 @@
-import sys
-input = sys.stdin.readline
+from collections import deque
 T = int(input())
-def dfs(si):
-    stk = [si]
-    V[si]=1
-    v1[si]=1
-    cnt = 1
-    while stk:
-        cur = stk.pop()
-        nxt = arr[cur][0]
-
-        if V[nxt]==1 and v1[nxt]==0:
-            return 0
-        elif V[nxt]==0 and v1[nxt]==0:
-            v1[nxt]=1
-            V[nxt]=1
-            stk.append(nxt)
-            cnt +=1
-
-        elif v1[nxt]==1 and V[nxt]==1:
-            while si!=nxt:
-                v1[si]=0
-                si = arr[si][0]
-                cnt-=1
-
-    return cnt
-
 for _ in range(T):
-    N = int(input())
+    N =int(input())
+    lst = list(map(int, input().split()))
+    degree = [0]*(N+1)
+    adj = [[] for _ in range(N+1)]
+    for idx, val in enumerate(lst, start=1):
+        adj[idx].append(val)
+        degree[val]+=1
 
-    st = [0]+list(map(int,input().split()))
-    arr = [[] for _ in range(N+1)]
-    V = [0]*(N+1)
-    v1 = [0] * (N+1)
-    for i in range(1,len(st)):
-        arr[i].append(st[i])
+    q = deque()
+    v = [0] * (N + 1)
+    cnt = 0
 
-    ans = 0
     for i in range(1,N+1):
-        if V[i]==0 and V[st[i]]==0:
-            ans += dfs(i)
+        if degree[i]==0:
+            q.append(i)
+            v[i]=1
+            cnt+=1
 
-    print(N-ans)
+    while q:
+        for _ in range(len(q)):
+            cur = q.popleft()
+
+            for nxt in adj[cur]:
+                if v[nxt]==0:
+                    degree[nxt]-=1
+                    if degree[nxt]==0:
+                        v[nxt]=1
+                        q.append(nxt)
+                        cnt+=1
+    print(cnt)
