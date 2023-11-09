@@ -1,4 +1,3 @@
-from collections import deque
 def rotate(arr):
     new = [[0]*5 for _ in range(5)]
     for i in range(5):
@@ -17,13 +16,14 @@ for i in range(5):
 
 
 def bfs(arr):
-    q = deque([(0,0,0)])
+    q = [(0,0,0)]
     cnt = 0
     v = [[[0]*5 for _ in range(5)] for _ in range(5)]
     v[0][0][0]=1
     while q:
-        for _ in range(len(q)):
-            ci,cj,ck = q.popleft()
+        temp_q = []
+        for i in range(len(q)):
+            ci,cj,ck = q[i]
             if (ci,cj,ck)==(4,4,4):
                 return cnt
 
@@ -31,14 +31,18 @@ def bfs(arr):
                 ni,nj,nk = ci+di,cj+dj,ck+dk
                 if 0<=ni<5 and 0<=nj<5 and 0<=nk<5 and v[ni][nj][nk]==0 and arr[ni][nj][nk]==1:
                     v[ni][nj][nk]=1
-                    q.append((ni,nj,nk))
+                    temp_q.append((ni,nj,nk))
         cnt+=1
+        q = temp_q
     return 123456789
 
 ans = 123456789
 visited = [0]*5
 def dfs(n,arr):
     global ans
+    if ans==12:
+        return
+
     if n==5:
         if arr[0][0][0]==1 and arr[4][4][4]==1:
             ans = min(ans, bfs(arr))
