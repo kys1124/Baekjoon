@@ -1,6 +1,4 @@
 from collections import deque
-arr = []
-total_dic = {}
 def rotate(arr):
     new = [[0]*5 for _ in range(5)]
     for i in range(5):
@@ -8,55 +6,55 @@ def rotate(arr):
             new[i][j] = arr[4-j][i]
     return new
 
-for num in range(5):
-    dic = {}
-    small_arr = [list(map(int, input().split())) for _ in range(5)]
-    dic[0] = small_arr
-    for i in range(1,4):
-        dic[i] = rotate(dic[i-1])
-    total_dic[num] = dic
+dic ={0:[],1:[],2:[],3:[],4:[]}
+for i in range(5):
+    arr = [list(map(int, input().split())) for _ in range(5)]
+
+    dic[i].append(arr)
+    for j in range(3):
+        new_arr = rotate(dic[i][j])
+        dic[i].append(new_arr)
+
 
 def bfs(arr):
-    if arr[0][0][0]==0:
-        return 5*5*5+1
     q = deque([(0,0,0)])
+    cnt = 0
     v = [[[0]*5 for _ in range(5)] for _ in range(5)]
     v[0][0][0]=1
-    cnt = 0
     while q:
         for _ in range(len(q)):
             ci,cj,ck = q.popleft()
             if (ci,cj,ck)==(4,4,4):
                 return cnt
 
-            for di,dj,dk in ((1,0,0),(0,1,0),(0,0,1),(-1,0,0),(0,-1,0),(0,0,-1)):
+            for di,dj,dk in ((1,0,0),(-1,0,0),(0,1,0),(0,-1,0),(0,0,1),(0,0,-1)):
                 ni,nj,nk = ci+di,cj+dj,ck+dk
                 if 0<=ni<5 and 0<=nj<5 and 0<=nk<5 and v[ni][nj][nk]==0 and arr[ni][nj][nk]==1:
-                    q.append((ni,nj,nk))
                     v[ni][nj][nk]=1
+                    q.append((ni,nj,nk))
         cnt+=1
-    return 5*5*5+1
+    return 123456789
 
-
-ans = 5*5*5+1
-v = [0,0,0,0,0]
-def dfs(n,  lst):
+ans = 123456789
+visited = [0]*5
+def dfs(n,arr):
     global ans
     if n==5:
-        ans = min(ans, bfs(lst))
+        if arr[0][0][0]==1 and arr[4][4][4]==1:
+            ans = min(ans, bfs(arr))
         return
 
-    for num in range(5):
-        if v[num]==0:
-            v[num]=1
-            for i in range(4):
-                lst.append(total_dic[num][i])
-                dfs(n+1, lst)
-                lst.pop()
-            v[num]=0
+    for i in range(5):
+        if visited[i]==0:
+            visited[i] = 1
+            for j in range(4):
+                arr.append(dic[i][j])
+                dfs(n+1, arr)
+                arr.pop()
+            visited[i]=0
 
 dfs(0,[])
-if ans==5*5*5+1:
+if ans==123456789:
     print(-1)
 else:
     print(ans)
