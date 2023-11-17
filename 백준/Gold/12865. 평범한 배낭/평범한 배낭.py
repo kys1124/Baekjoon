@@ -1,13 +1,16 @@
-N,K = map(int, input().split())
-lst = [0]+[list(map(int, input().split())) for _ in range(N)]
+N, K = map(int, input().split())
+value = [0]
+weight = [0]
+for _ in range(N):
+    w,v = map(int, input().split())
+    value.append(v)
+    weight.append(w)
 
-v = [[0]*(K+1) for _ in range(N+1)]
-
+dp = [[0]*(K+1) for _ in range(N+1)]
 for i in range(1,N+1):
-    for j in range(1,K+1):
-        if lst[i][0]>j:
-            v[i][j] = v[i-1][j]
+    for j in range(1,1+K):
+        if weight[i]>j:
+            dp[i][j] = dp[i-1][j]
         else:
-            v[i][j]= max(v[i-1][j],v[i-1][j-lst[i][0]]+lst[i][1])
-
-print(v[N][K])
+            dp[i][j] = max(value[i]+dp[i-1][j-weight[i]], dp[i-1][j])
+print(dp[N][K])
