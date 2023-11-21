@@ -1,39 +1,44 @@
+from  collections import Counter
 r,c,k = map(int, input().split())
+r-=1
+c-=1
 arr = [list(map(int, input().split())) for _ in range(3)]
-from collections import Counter
 
-def cal(arr):
-    mx_len = 0
+T = 0
+
+def cal(arr): #행 연산
+    mx = 0
     for i in range(len(arr)):
-        number = Counter(arr[i])
-        if number.get(0):
-            del number[0]
-        number = sorted(number.items(), key=lambda x:(x[1],x[0]))
-        arr[i] = []
-        for idx, x in enumerate(number):
-            if idx>=100:
+        count_dic = Counter(arr[i])
+        sorted_item = sorted(count_dic.items(), key=lambda x:(x[1],x[0]))
+        lst = []
+        for x,y in sorted_item:
+            if x==0:
+                continue
+            lst.append(x)
+            lst.append(y)
+            if len(lst)>100:
                 break
-            arr[i].append(x[0])
-            arr[i].append(x[1])
-        mx_len = max(mx_len, min(2*len(number), 100))
+        arr[i] = lst
+        mx = max(len(lst), mx)
 
     for i in range(len(arr)):
-        arr[i] += [0]*(mx_len-len(arr[i]))
+        arr[i] += [0]*(mx-len(arr[i]))
     return arr
 
+while True:
+    R,C = len(arr), len(arr[0])
+    if (0<=r<R and 0<=c<C and arr[r][c]==k) or T>100:
+        break
 
-
-t=0
-while not (0<=(r-1)<len(arr) and 0<=(c-1)<len(arr[0])) or arr[r-1][c-1]!=k:
-    t+=1
-    if len(arr)<len(arr[0]):
+    if R>=C:
+        arr = cal(arr)
+    else:
         arr = list(map(list, zip(*arr)))
         arr = cal(arr)
-        arr = list(map(list,zip(*arr)))
-    else:
-        arr =cal(arr)
-
-    if t>100:
-        t=-1
-        break
-print(t)
+        arr = list(map(list, zip(*arr)))
+    T+=1
+if T>100:
+    print(-1)
+else:
+    print(T)
