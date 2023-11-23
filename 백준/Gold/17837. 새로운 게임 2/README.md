@@ -4,11 +4,15 @@
 
 ### 성능 요약
 
-메모리: 116740 KB, 시간: 200 ms
+메모리: 111896 KB, 시간: 188 ms
 
 ### 분류
 
 구현, 시뮬레이션
+
+### 제출 일자
+
+2023년 11월 23일 20:53:00
 
 ### 문제 설명
 
@@ -67,7 +71,7 @@
 			<td style="width: 25%; text-align: center;"><img alt="" src="https://upload.acmicpc.net/36568153-8c2a-4fe9-b45f-72036c97f5aa/-/preview/" style="width: 250px; height: 252px;"></td>
 			<td style="width: 25%; text-align: center;"><img alt="" src="https://upload.acmicpc.net/babead43-4acc-425d-917a-54dcc6f45414/-/preview/" style="width: 250px; height: 251px;"></td>
 			<td style="width: 25%; text-align: center;"><img alt="" src="https://upload.acmicpc.net/1edd5ed8-0f4c-4c6d-b304-3b7642f42c6f/-/preview/" style="width: 250px; height: 251px;"></td>
-			<td style="width: 25%; text-align: center;"><img alt="" src="https://upload.acmicpc.net/028a5dd2-5524-4475-8439-9e7794e28ee4/-/preview/" style="width: 250px; height: 252px;"></td>
+			<td style="width: 25%; text-align: center;"><img alt="" src="" style="width: 250px; height: 252px;"></td>
 		</tr>
 	</tbody>
 </table>
