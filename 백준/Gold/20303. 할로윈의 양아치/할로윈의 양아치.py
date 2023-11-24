@@ -1,46 +1,41 @@
-N,M,K = map(int, input().split())
-candy = [0]+list(map(int, input().split()))
-p = [i for i in range(1+N)]
-
+N, M, K = map(int, input().split())
+#N 아이들 수 , M 친구 관계 수, K 최소 아이 수
+candy = list(map(int, input().split()))
+p = [i for i in range(N)]
 def find(x):
-    if x!=p[x]:
+    if p[x]!=x:
         p[x]=find(p[x])
     return p[x]
 
 def union(a,b):
-    a= find(a)
-    b= find(b)
-    p[a]=b
+    a = find(a)
+    b = find(b)
+    if b>a:
+        p[a] = b
+    else:
+        p[b] = a
 
-ans =[]
-sm = []
+
 for _ in range(M):
-    a,b = map(int, input().split())
+    a,b = map(lambda x:int(x)-1, input().split())
     union(a,b)
 
+candy_dic = {}
+children = {}
 
-dic =dict()
-for i in range(1,N+1):
-    if find(i) not in dic:
-        dic[find(i)]= []
-        dic[find(i)].append(1)
-        dic[find(i)].append(candy[i])
+for i in range(N):
+    num = p[find(i)]
+    if num in candy_dic:
+        candy_dic[num]+=candy[i]
+        children[num]+=1
     else:
-        dic[find(i)][0]+=1
-        dic[find(i)][1]+=candy[i]
+        candy_dic[num] = candy[i]
+        children[num]=1
 
-friend = []
-t_candy = []
-for value in dic.values():
-    friend.append(value[0])
-    t_candy.append(value[1])
-
-dp = [[0]*(K) for _ in range(len(friend))]
-
-for i in range(len(friend)):
-    for j in range(K):
-        if friend[i]>j:
-            dp[i][j] = dp[i-1][j]
-        else:
-            dp[i][j] = max(dp[i-1][j], dp[i-1][j-friend[i]]+t_candy[i])
-print(dp[len(friend)-1][K-1])
+dp  = [0]*N
+for key in children.keys():
+    for i in range(K-1,-1,-1):
+        if children[key]>i:
+            continue
+        dp[i] = max(dp[i-children[key]]+candy_dic[key], dp[i])
+print(dp[K-1])
