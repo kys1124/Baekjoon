@@ -1,5 +1,7 @@
+import sys
 import heapq
 from collections import deque
+input= sys.stdin.readline
 N, K = map(int, input().split())
 wait = deque()
 pq = []
